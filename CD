@@ -1,0 +1,46 @@
+import pandas as pd
+import numpy as np
+car_eval = pd.read_csv('car_eval_dataset.csv')
+# print(car_eval.head())
+
+# Creating a table of frequency by country
+country_frequency = car_eval.manufacturer_country.value_counts()
+print(country_frequency)
+
+# Finding the value of the N-th most freq. observation
+# print(country_frequency.index[3])
+
+# Table of proportion by country
+country_proportion = car_eval.manufacturer_country.value_counts(normalize=True)
+print(country_proportion)
+
+# Summarizing Buying Costs
+print(car_eval.buying_cost.unique())
+buying_cost_categories = ['low', 'med', 'high', 'vhigh']
+# Converting buying_cost col. to type Category
+car_eval.buying_cost = pd.Categorical(car_eval.buying_cost, buying_cost_categories, ordered=True)
+# Calculating the Median of the buying_cost
+median_cat_num = np.median(car_eval.buying_cost.cat.codes)
+print(median_cat_num)
+median_category = buying_cost_categories[int(median_cat_num)]
+print(median_category)
+
+# Summarizing Luggage Capacity
+# Getting the propotions
+luggage_propotion = car_eval.luggage.value_counts(normalize=True)
+print(luggage_propotion)
+
+# Getting the propotions in a different way
+luggage_propotion_2 = car_eval.luggage.value_counts()/len(car_eval.luggage)
+print(luggage_propotion_2)
+
+# Checking for null values in the column
+luggage_propotion_with_null = car_eval.luggage.value_counts(dropna=False, normalize=True)
+print(luggage_propotion_with_null)
+
+# Summarizing Passenger Capacity
+frequency = (car_eval.doors == '5more').sum()
+print(frequency)
+
+propotion = (car_eval.doors == '5more').mean()
+print(propotion)
